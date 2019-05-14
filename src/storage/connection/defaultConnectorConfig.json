@@ -1,0 +1,7 @@
+{
+  "goodsConnector": {
+    "pathStructure": {
+      "root": "/goods/"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+.product-map {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.product-map_paln {
+  max-height: 100%;
+  max-width: 100%;
+}

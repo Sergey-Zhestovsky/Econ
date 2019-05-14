@@ -1,0 +1,23 @@
+.overview {
+  padding: 25px inherit;
+}
+
+.overview_container {
+  padding: 25px;
+}
+
+.overview_container-title {
+  font-size: 1.4em;
+  font-weight: 600;
+  padding: 15px 0;
+  display: block;
+}
+
+.overview_container-title.main-title {
+  text-align: center;
+  font-size: 2em;
+}
+
+.overview_map-wrapper{
+  height: 60vh;
+}

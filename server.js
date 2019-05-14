@@ -3,6 +3,7 @@ let express = require("express"),
   bodyParser = require("body-parser"),
   cookieParser = require("cookie-parser"),
   config = require("./config"),
+  mongoose = require("./logic/mongodb/connect"),
   port = process.env.PORT || config.port;
 
 let entryRouter = require("./routes/entry"),

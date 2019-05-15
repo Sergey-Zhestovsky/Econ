@@ -46,7 +46,7 @@ let goodsSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true
   },
-  storage: {
+  store: {
     type: Schema.Types.ObjectId,
     required: true
   },
@@ -105,7 +105,7 @@ let countrySchema = new Schema({
   }
 }, { versionKey: false });
 
-let storageSchema = new Schema({
+let storeSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -164,7 +164,7 @@ module.exports = {
   goodsImageSchema,
   productTypeSchema,
   countrySchema,
-  storageSchema,
+  storeSchema,
   privrlegeSchema,
   userSchema
 }

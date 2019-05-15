@@ -3,7 +3,7 @@
   align-self: center;
   background: #F5F5F5;
   max-height: 100%;
-  width: 70%;
+  max-width: 70%;
   overflow-y: auto;
   cursor: auto;
   border-radius: 4px;
@@ -26,7 +26,7 @@
 }
 
 .popup_body {
-  padding: 25px;
+  padding: 25px 50px;
 }
 
 .popup_body-title {
@@ -165,8 +165,14 @@
 .map-selector_menu {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 20px 50px;
+  justify-content: center;
+  padding: 0 50px 20px;
+}
+
+.map-selector_coordinates {
+  text-align: center;
+  margin: 0 20px;
+  width: 250px;
 }
 
 .map-selector-map-wrapper {

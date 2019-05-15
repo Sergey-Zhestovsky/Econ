@@ -26,7 +26,9 @@ const TEMP = {
 };
 
 let init = {
-  goods: [TEMP, TEMP, TEMP],
+  goods: [
+    {...TEMP, _id: 1}, {...TEMP, _id: 2}, {...TEMP, _id: 3}
+  ],
   error: null
 };
 

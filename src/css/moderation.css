@@ -1,0 +1,103 @@
+.moderation {
+  display: flex;
+  padding-top: 45px;
+  padding-bottom: 45px;
+  min-height: calc(100vh - 70px);
+}
+
+.moderation_menu {
+  width: 15%;
+  text-align: right;
+  flex-grow: 0;
+  border-right: 5px solid #f0436b;
+}
+
+.moderation_menu-list {
+  font-size: 1.25em;
+  font-weight: 600;
+}
+
+.moderation_menu-elements {
+  display: block;
+  padding: 20px;
+  margin-bottom: 10px;
+  transition: all .125s;
+}
+
+.moderation_menu-elements:hover, .moderation_menu-elements.active {
+  padding-left: 0;
+  padding-right: 40px;
+}
+
+.moderation_menu-elements.active {
+  background: #f0436b;
+  color: aliceblue;
+}
+
+.moderation_main {
+  flex-grow: 1;
+}
+
+.goods-controller {
+  padding: 20px;
+}
+
+.table-cuntroller {
+  width: 100%;
+  font-size: 1.1em;
+}
+
+.table-cuntroller th, 
+.table-cuntroller td {
+  padding: 5px 10px;
+}
+
+.table-cuntroller th:last-child, 
+.table-cuntroller td:last-child {
+  padding-right: 0;
+}
+
+.table-cuntroller th:first-child, 
+.table-cuntroller td:first-child {
+  padding-left: 0;
+}
+
+.table-cuntroller_button-list {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.table-cuntroller_button-list button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 4px;
+  border: 2px solid #f0436b;
+  transition: all .125s;
+}
+
+.table-cuntroller_button-list button:hover {
+  background: #f0436b;
+  color: whitesmoke;
+}
+
+.goods-controller_controll-panel {
+  margin: 20px 0px;
+}
+
+.goods-controller_controll-panel {
+  text-align: center;
+  font-size: 1.25em;
+}
+
+.goods-controller_controll-add-btn {
+  font-weight: 600;
+  padding: 8px 15px;
+  border: 2px solid #f0436b;
+  border-radius: 4px;
+  transition: all .125s;
+}
+
+.goods-controller_controll-add-btn:hover {
+  background: #f0436b;
+  color: whitesmoke;
+}

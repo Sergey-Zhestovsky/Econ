@@ -1,0 +1,125 @@
+.search {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.search_main {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.search-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+}
+
+.search-element {
+  position: relative;
+  overflow: hidden;
+  padding: 15px;
+  border: 1px solid #d6d6d6;
+}
+
+.search-element_image {
+  width: 100%;
+  height: 200px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-bottom: 10px;
+}
+
+.search-element_title {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.2em;
+  padding: 10px 0;
+}
+
+.search-element_price {
+  text-align: center;
+}
+
+.search-element_menu {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(240, 67, 107, 0.7);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: all .2s;
+}
+
+.search-element:hover .search-element_menu {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.search-element_menu-add-btn {
+  height: 35px;
+  background: #f1f1f1;
+  border-radius: 50%;
+  width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .125s;
+}
+
+.search-element_menu-add-btn:hover {
+  color: #b81961;
+}
+
+.search-element_menu-link {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.search-element_menu-link i {
+  padding: 0 10px 0 5px;
+  transition: all .125s;
+}
+
+.search-element_menu-link:hover i {
+  padding: 0 5px 0 10px;
+}
+
+.selector-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 14.5%;
+  margin: 70px 0 20px;
+}
+
+.selector-list_first {
+  transform: scale(1.2);
+  transform-origin: 0% 100%;
+}
+
+.selector-list_second {
+  transform: scale(1.1);
+  transform-origin: 50% 100%;
+}
+
+.selector-list .search-element {
+  border-width: 3px;
+}
+
+.selector-list_first .search-element {
+  border-color: gold;
+}
+
+.selector-list_second .search-element {
+  border-color: silver;
+}
+
+.selector-list_third .search-element {
+  border-color: burlywood;
+}

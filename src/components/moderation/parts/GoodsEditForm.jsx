@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import withOverlay from "../../../hoc/withOverlay";
 import FileInput from "./FileInput";
 import MapSelector from "./MapSelector";
+import { connect } from "react-redux";
+import Validator from "../../../js/validator";
+import FormErrors from "./FormErrors";
+import { setProduct, editProduct } from "../../../storage/actions/goodsActions";
 
 import "../../../css/popup.css";
 
@@ -9,19 +13,132 @@ class GoodsEditForm extends Component {
   constructor(props) {
     super(props);
 
-    this.imageType = /^image\/*/;
-
     this.state = {
-      action: null,
       form: {
-        image: {}
+        _id: null,
+        name: "",
+        productType: "",
+        country: "",
+        company: "",
+        price: "",
+        discount: "",
+        image: {},
+        store: null,
+        location: null
       },
       errors: {},
       backgroundImage: "",
-      isDragged: false
+      isDragged: false,
+      initialImage: ""
     };
 
     this.dragCounter = 0;
+    this.imageMaxSize = 20000000;
+    this.imageType = /^image\/*/;
+    this.validator = {};
+    this.validator.add = {
+      name: ["required", ["maxSize", 50]],
+      productType: ["required"],
+      country: ["required"],
+      company: ["required", ["maxSize", 50]],
+      price: ["required", "number"],
+      discount: ["number"],
+      image: {
+        property: ["type", "type", "size"],
+        rules: [
+          "required",
+          ["test", this.imageType, "imageType"],
+          ["larger", this.imageMaxSize, "imageSize"]
+        ]
+      },
+      store: ["required"],
+      location: ["required"]
+    };
+    this.validator.edit = {
+      ...this.validator.add,
+      image: {
+        property: ["type", "size"],
+        rules: [
+          ["test", this.imageType, "imageType"],
+          ["larger", this.imageMaxSize, "imageSize"]
+        ]
+      }
+    };
+    
+    this.validator = new Validator(this.validator[this.props.condition]);
+
+    if (props.element) {
+      this.initStateByElement(props.element);
+    }
+  }
+
+  initStateByElement(el) {
+    this.state = {
+      ...this.state,
+      form: {
+        _id: el._id,
+        name: el.name || "",
+        productType: el.productType._id || "",
+        country: el.country._id || "",
+        company: el.company || "",
+        price: el.price || "",
+        discount: el.discount || "",
+        image: el.image || {},
+        store: el.store,
+        location: el.location
+      },
+      initialImage: "/img/products/" + el.image
+    };
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        [e.target.name]: e.target.value
+      }
+    });
+  }
+
+  submitHandler = (e) => {
+    e.preventDefault();
+
+    if (this.props.poductLoaded)
+      return;
+
+    let product = {...this.state.form},
+      errors = this.validator.validate(product);
+
+    this.setState({
+      errors
+    });
+
+    if (Object.keys(errors).length === 0) {
+      if (!product._id)
+        delete product._id;
+
+      product.date = Date.now();
+      product.location = JSON.stringify(this.state.form.location);
+      typeof product.image === typeof "" && ( delete product.image )
+
+      let fc = this.setFunction(this.props.condition);
+
+      if (fc)
+        return fc(product, (result) => {
+          this.props.clickHandler();
+        });
+    }
+  }
+
+  setFunction(action) {
+    switch (action) {
+      case "add":
+        return this.props.setProduct;
+      case "edit":
+        return this.props.editProduct;
+      default:
+        return null;
+    }
   }
 
   onImageAdded = (file) => {
@@ -95,16 +212,25 @@ class GoodsEditForm extends Component {
         isDragged
       });
     }
-    console.log(this.state.isDragged);
+  }
 
+  mapSateHandler = (state) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        ...state,
+        location: state.location,
+        store: state.store._id
+      }
+    })
   }
 
   render() {
     return (
       <div className="popup">
         <div className="popup_header">
-          <div className="popup_header-title">Add</div>
-          <div className="popup_header-close">
+          <div className="popup_header-title">{this.props.condition}</div>
+          <div className="popup_header-close" onClick={this.props.clickHandler}>
             <i className="fas fa-times"></i>
           </div>
         </div>
@@ -114,7 +240,8 @@ class GoodsEditForm extends Component {
             autoComplete="off"
             onDragEnter={this.handleDragEnter}
             onDragLeave={this.handleDragEnd}
-            onDrop={this.handleDrop}>
+            onDrop={this.handleDrop}
+            onSubmit={this.submitHandler}>
             <div className="popup_body-wrpper">
               <div className="popup_body-coll">
                 <div className="popup_body-img-wrapper">
@@ -122,7 +249,7 @@ class GoodsEditForm extends Component {
                     onImageAdded={this.onImageAdded}
                     onImageDeleted={this.onImageDeleted}
                     imageName={this.state.form.image.name}
-                    backgroundImage={this.state.backgroundImage}
+                    backgroundImage={this.state.backgroundImage || this.state.initialImage}
                     isDragged={this.state.isDragged} />
                 </div>
               </div>
@@ -130,43 +257,61 @@ class GoodsEditForm extends Component {
                 <div className="popup_body-field-wrapper">
                   <label className="popup_body-field">
                     <span>Name</span>
-                    <input type="text" name="name" id="name" />
+                    <input type="text" name="name" id="name" onChange={this.handleChange} value={this.state.form.name} />
                   </label>
                   <label className="popup_body-field">
                     <span>type</span>
-                    <select name="type" id="type">
-                      <option value="1">type1</option>
-                      <option value="2">type2</option>
+                    <select name="productType" id="productType" onChange={this.handleChange} value={this.state.form.productType}>
+                      <option value="">Select one</option>
+                      {
+                        this.props.productTypeList.map(
+                          (el) => <option value={el._id} key={el._id}>{el.name}</option>
+                        )
+                      }
                     </select>
                   </label>
                   <label className="popup_body-field">
                     <span>country</span>
-                    <select name="country" id="country">
-                      <option value="1">country1</option>
-                      <option value="2">country2</option>
+                    <select name="country" id="country" onChange={this.handleChange} value={this.state.form.country}>
+                      <option value="">Select one</option>
+                      {
+                        this.props.countryList.map(
+                          (el) => <option value={el._id} key={el._id}>{el.name}</option>
+                        )
+                      }
                     </select>
                   </label>
                   <label className="popup_body-field">
                     <span>Company</span>
-                    <input type="text" name="company" id="company" />
+                    <input type="text" name="company" id="company" onChange={this.handleChange} value={this.state.form.company} />
                   </label>
                   <label className="popup_body-field">
                     <span>Price</span>
-                    <input type="text" name="price" id="price" />
+                    <input type="text" name="price" id="price" onChange={this.handleChange} value={this.state.form.price} />
                   </label>
                   <label className="popup_body-field">
                     <span>Discount</span>
-                    <input type="text" name="discount" id="discount" />
+                    <input type="text" name="discount" id="discount" onChange={this.handleChange} value={this.state.form.discount} />
                   </label>
                 </div>
               </div>
             </div>
             <div className="popup_body-title">Location</div>
             <div className="popup_body-wrpper">
-              <MapSelector />
+              <MapSelector
+                stateHandler={this.mapSateHandler}
+                initialStore={this.state.form.store}
+                initialLocation={this.state.form.location} />
             </div>
+            <FormErrors errors={this.state.errors} />
             <div className="center">
-              <button className="popup_body-submit-btn">Submit</button>
+              <button className="popup_body-submit-btn">
+                {
+                  this.props.poductLoaded
+                    ? "Loading"
+                    : "Submit"
+                }
+              </button>
             </div>
           </form>
         </div>
@@ -175,4 +320,19 @@ class GoodsEditForm extends Component {
   }
 }
 
-export default withOverlay(GoodsEditForm);
+function mapStateToProps(state) {
+  return {
+    poductLoaded: state.goods.loading,
+    countryList: state.countries.countries,
+    productTypeList: state.productTypes.types
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setProduct: (product, cb) => dispatch(setProduct(product, cb)),
+    editProduct: (product, cb) => dispatch(editProduct(product, cb)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withOverlay(GoodsEditForm));

@@ -2,7 +2,9 @@ import React from "react";
 
 export default function FileInput(props) {
   let style = {
-    backgroundImage: `url(${props.backgroundImage})`
+    backgroundImage: `url(${
+      props.backgroundImage 
+    })`
   };
 
   function handleDrop(e) {

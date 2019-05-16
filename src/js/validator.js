@@ -36,11 +36,13 @@ export default class Validator {
         value = setValue(values, fieldName, currentProp);
         chooseTest(rule, fieldName, value, values, this.error);
       }
-
-      if (!isrequired && value === undefined)
+      
+      if (!isrequired && !value) {
         delete this.error[fieldName];
+      }
+        
     }
-    
+
     function setValue(values, valueName, fieldProperty) {
       if (!values[valueName])
         return null;
@@ -71,7 +73,7 @@ export default class Validator {
 
     function chooseTest(option, key, value, allValues, error) {
       let isError = false;
-      
+
       switch (option.toString()) {
         case "required":
           isError = required(value);
@@ -88,8 +90,11 @@ export default class Validator {
         case "larger":
           isError = larger(value, option.value);
           break;
-          case "fullName":
+        case "fullName":
           isError = fullName(value);
+          break;
+        case "number":
+          isError = number(value);
           break;
         case "test":
           isError = test(value, option.value);
@@ -101,9 +106,9 @@ export default class Validator {
       if (isError) {
         let name = option.describe || option.toString();
 
-        error[key] 
-        ? (error[key].push(name)) 
-        : (error[key] = [name]);
+        error[key]
+          ? (error[key].push(name))
+          : (error[key] = [name]);
       }
     }
 
@@ -135,6 +140,10 @@ export default class Validator {
       let regExp = new RegExp("^\\p{L}+\\s+\\p{L}+$", "u");
 
       return !regExp.test(string);
+    }
+
+    function number(string) {
+      return !(parseInt(string) == Number(string));
     }
 
     function test(str, regExp) {

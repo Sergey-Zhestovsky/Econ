@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import ControlTable from "./TableController";
-import GoodsEditForm from "./GoodsEditForm";
+import { getGoods, deleteProduct } from "../../storage/actions/goodsActions";
+import ControlTable from "./parts/TableController";
+import GoodsEditForm from "./parts/GoodsEditForm";
 import moment from "moment";
 
 class GoodsController extends Component {
@@ -10,8 +11,9 @@ class GoodsController extends Component {
 
     this.state = {
       popup: {
-        show: true,
-        condition: "add"
+        show: false,
+        condition: null,
+        element: null
       }
     };
 
@@ -49,12 +51,17 @@ class GoodsController extends Component {
     };
   }
 
-  openPopUp(condition) {
+  componentDidMount() {
+    this.props.getGoods();
+  }
+
+  openPopUp(condition, element) {
     this.setState({
       ...this.state,
       popup: {
         show: true,
-        condition
+        condition,
+        element
       }
     });
   }
@@ -64,7 +71,8 @@ class GoodsController extends Component {
       ...this.state,
       popup: {
         show: false,
-        condition: null
+        condition: null,
+        element: null
       }
     });
   }
@@ -73,12 +81,12 @@ class GoodsController extends Component {
     this.closePopUp();
   }
 
-  deleteHandler(object) {
-    console.log(object);
+  deleteHandler = (object) => {
+    this.props.deleteProduct(object._id);
   }
 
-  editHandler(object) {
-    console.log(object);
+  editHandler = (object) => {
+    this.openPopUp("edit", object);
   }
 
   render() {
@@ -87,7 +95,7 @@ class GoodsController extends Component {
         <div className="goods-controller_controll-panel">
           <button
             className="goods-controller_controll-add-btn"
-            onClick={this.openPopUp.bind(this, "add")}>
+            onClick={this.openPopUp.bind(this, "add", null)}>
             Add
           </button>
         </div>
@@ -99,7 +107,8 @@ class GoodsController extends Component {
           <GoodsEditForm 
           condition={this.state.popup.condition}
           clickHandler={this.popupCloseHandler}
-          isOpen={this.state.popup.show} />
+          isOpen={this.state.popup.show}
+          element={this.state.popup.element} />
         }
       </div>
     );
@@ -112,4 +121,11 @@ function mapStateFromProps(state) {
   }
 }
 
-export default connect(mapStateFromProps)(GoodsController);
+function mapDispatchToProps(dispatch) {
+  return {
+    getGoods: () => dispatch(getGoods()),
+    deleteProduct: (id) => dispatch(deleteProduct(id))
+  }
+}
+
+export default connect(mapStateFromProps, mapDispatchToProps)(GoodsController);

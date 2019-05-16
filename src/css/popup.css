@@ -186,6 +186,22 @@
   padding: 25px;
   border: 5px solid #e0e0e0;
   min-height: 200px;
+  display: flex;
+}
+
+.map-selector_coordinate-name {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin: 0 5px;
+}
+
+.map-selector_coordinate {
+  margin-right: 15px;
+}
+
+.map-selector_coordinate-sub {
+  font-size: .85em;
+  margin: 0 4px;
 }
 
 .popup_body-submit-btn {
@@ -200,4 +216,19 @@
 .popup_body-submit-btn:hover {
   background: #f0436b;
   color: whitesmoke;
+}
+
+.form-error {
+  padding: 15px 0;
+}
+
+.form-error_block {
+  display: flex;
+  padding: 3px 5px;
+  border-left: 4px solid #f0436b;
+  margin-bottom: 2px;
+}
+
+.form-error_block-title {
+  font-weight: 600;
 }

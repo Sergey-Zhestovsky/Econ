@@ -12,7 +12,7 @@ async function getProducts({ searchDetails = {}, length = -1, sortedBy = "date" 
     goods = await schemas.Goods.aggregate([{
       $match: searchDetails
     }, {
-      $sort: { [sortedBy]: -1 }
+      $sort: { [sortedBy]: 1 }
     }, {
       $lookup: {
         from: 'producttypes',
@@ -61,11 +61,15 @@ async function getProducts({ searchDetails = {}, length = -1, sortedBy = "date" 
         path: "$store",
         preserveNullAndEmptyArrays: true
       }
+    }, {
+      $addFields: {
+        image: { $concat: [{ $toString: "$image._id" }, ".", "$image.extension"] }
+      }
     }]);
   } catch (error) {
     return Promise.reject(errorHandler("getGoods", error));
   }
-  
+
   return goods;
 }
 
@@ -98,8 +102,66 @@ async function setProduct(data) {
   return responce;
 }
 
+async function editProduct(data) {
+  let responce;
+
+  try {
+    responce = await schemas.Goods.findByIdAndUpdate(data._id, data);
+    responce = await getProduct({ _id: data._id });
+  } catch (error) {
+    return Promise.reject(errorHandler("editProduct", error));
+  }
+
+  return responce;
+}
+
+async function deleteProduct(id) {
+  let responce;
+
+  try {
+    responce = await schemas.Goods.findByIdAndDelete(id);
+  } catch (error) {
+    return Promise.reject(errorHandler("deleteProduct", error));
+  }
+
+  return responce;
+}
+
+async function getProductImage(searchDetails = {}) {
+  let image;
+
+  searchDetails._id = searchDetails._id
+    ? new mongoose.Types.ObjectId(searchDetails._id)
+    : undefined;
+
+  try {
+    image = await schemas.Goods.aggregate([{
+      $match: searchDetails
+    }, {
+      $lookup: {
+        from: 'goodsimages',
+        localField: 'image',
+        foreignField: '_id',
+        as: 'image'
+      }
+    }, {
+      $unwind: {
+        path: "$image",
+        preserveNullAndEmptyArrays: true
+      }
+    }]);
+  } catch (error) {
+    return Promise.reject(errorHandler("getProductImage", error));
+  }
+
+  return image[0].image;
+}
+
 module.exports = {
   getProducts,
   getProduct,
-  setProduct
+  setProduct,
+  editProduct,
+  getProductImage,
+  deleteProduct
 };

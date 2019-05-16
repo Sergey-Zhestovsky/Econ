@@ -6,10 +6,11 @@
     "replica": "mongodb://DESKTOP-AH2PP3O:27017/Econ?replicaSet=rs",
     "options": { 
       "useNewUrlParser": "true", 
-      "useCreateIndex": "true" 
+      "useCreateIndex": "true",
+      "useFindAndModify": "false"
     }
   },
   "imageStorage": {
-    "projectImage": "/public/img/uploads/"
+    "product": "/public/img/products/"
   }
 }

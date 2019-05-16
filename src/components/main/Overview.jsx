@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Map from "../goods/Map";
+import MapController from "./parts/MapController";
 import SampleList from "../goods/SampleList";
 
 import "../../css/overview.css";
@@ -11,7 +11,7 @@ class Overview extends Component {
         <div className="overview_container">
           <span className="overview_container-title main-title">Grocery area</span>
           <div className="overview_map-wrapper">
-            <Map />
+            <MapController />
           </div>
         </div>
         <div className="overview_container">

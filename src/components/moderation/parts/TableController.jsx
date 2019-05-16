@@ -1,20 +1,13 @@
 import React, { Component } from "react";
 
-class TableController extends Component {
-  constructor(props) {
-    super(props);
+function TableController(props) {
+  let { elements, schema } = props;
 
-    let { elements, schema } = props;
-    console.log(elements, schema);
+  schema = formatSchema(schema);
+  let header = createHeader(schema);
+  let body = createBody(schema, elements);
 
-    schema = this.formatSchema(schema);
-    this.header = this.createHeader(schema);
-    this.body = this.createBody(schema, elements);
-
-    console.log(this.header, this.body);
-  }
-
-  formatSchema(schema) {
+  function formatSchema(schema) {
     for (let i = 0; i < schema.fields.length; i++) {
       if (typeof schema.fields[i] !== typeof {})
         schema.fields[i] = { property: schema.fields[i] };
@@ -23,7 +16,7 @@ class TableController extends Component {
     return schema;
   }
 
-  createHeader(schema) {
+  function createHeader(schema) {
     let result = [];
 
     if (schema.numeric)
@@ -45,7 +38,7 @@ class TableController extends Component {
     );
   }
 
-  createBody(schema, elements) {
+  function createBody(schema, elements) {
     let result = [];
 
     for (let i = 0; i < elements.length; i++) {
@@ -91,7 +84,7 @@ class TableController extends Component {
 
       result.push(
         <tr key={elenemt._id}>
-          {row.map((name) => <td key={name}>{name}</td>)}
+          {row.map((name, id) => <td key={id}>{name}</td>)}
         </tr>
       );
     } // elements 
@@ -99,18 +92,16 @@ class TableController extends Component {
     return result;
   }
 
-  render() {
-    return (
-      <table className="table-cuntroller">
-        <thead className="table-cuntroller_header">
-          {this.header}
-        </thead>
-        <tbody className="table-cuntroller_body">
-          {this.body}
-        </tbody>
-      </table>
-    );
-  }
+  return (
+    <table className="table-cuntroller">
+      <thead className="table-cuntroller_header">
+        {header}
+      </thead>
+      <tbody className="table-cuntroller_body">
+        {body}
+      </tbody>
+    </table>
+  );
 }
 
 export default TableController;

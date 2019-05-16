@@ -2,7 +2,10 @@ let mongoose = require("mongoose"),
   schemas = require("./models"),
   config = require("../../config");
 
-mongoose.connect(config.mongoDB_connect.uri, config.mongoDB_connect.options)
+mongoose.connect(config.mongoDB_connect.uri, {
+  ...config.mongoDB_connect.options,
+  useFindAndModify: false
+})
   .then(setCollections,
     error => {
       console.error(error);

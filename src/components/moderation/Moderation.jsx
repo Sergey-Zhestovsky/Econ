@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import NavBar from "./parts/ModerationNavigationBar";
-import Goods from "./parts/GoodsController";
-import Types from "./parts/TypesTable";
-import Countries from "./parts/CountriesTable";
+import Goods from "./GoodsController";
+import Types from "./TypesTable";
+import Countries from "./CountriesTable";
 
 import "../../css/moderation.css";
 

@@ -7,8 +7,10 @@ let express = require("express"),
   port = process.env.PORT || config.port;
 
 let entryRouter = require("./routes/entry"),
+  goodsRouter = require("./routes/goods"),
   countryRouter = require("./routes/country"),
   productTypeRouter = require("./routes/productType"),
+  storeRouter = require("./routes/store"),
   errorRouter = require("./routes/error");
 
 let app = express();
@@ -22,8 +24,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.all("*", entryRouter);
+app.use("/goods", goodsRouter);
 app.use("/country", countryRouter);
 app.use("/producttype", productTypeRouter);
+app.use("/store", storeRouter);
 //app.use("/authorization", authRouter);
 
 app.use(errorRouter.error);

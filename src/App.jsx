@@ -10,7 +10,16 @@ import Moderation from "./components/moderation/Moderation";
 import SignUp from "./components/auth/SignUp";
 import SignIn from "./components/auth/SignIn";
 
+import { connect } from "react-redux";
+import { getCountries } from "./storage/actions/countryActions";
+import { getProductTypes } from "./storage/actions/productTypeActions";
+
 class App extends Component {
+  componentDidMount() {
+    this.props.getCountries();
+    this.props.getProductTypes();
+  }
+
   render() {
     return (
       <Router>
@@ -22,7 +31,7 @@ class App extends Component {
               <Route path={"/products"} component={Search} />
               <Route path={"/selector"} component={Selector} />
               <Route path={"/product/:id"} component={ProductDetails} />
-              <Route path={["/moderation/:table", "/moderation", ]} component={Moderation} />
+              <Route path={["/moderation/:table", "/moderation",]} component={Moderation} />
               <Route path={"/signup"} component={SignUp} />
               <Route path={"/signin"} component={SignIn} />
             </Switch>
@@ -33,4 +42,11 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapDispatchToProps(dispatch) {
+  return {
+    getCountries: () => dispatch(getCountries()),
+    getProductTypes: () => dispatch(getProductTypes())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App);

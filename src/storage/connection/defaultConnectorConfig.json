@@ -1,7 +1,25 @@
 {
   "goodsConnector": {
     "pathStructure": {
-      "root": "/goods/"
+      "root": "/goods/",
+      "setProduct": "create",
+      "updateProduct": "update",
+      "deleteProduct": "delete"
+    }
+  },
+  "countriesConnector": {
+    "pathStructure": {
+      "root": "/country/"
+    }
+  },
+  "productTypesConnector": {
+    "pathStructure": {
+      "root": "/producttype/"
+    }
+  },
+  "storesConnector": {
+    "pathStructure": {
+      "root": "/store/"
     }
   }
 }

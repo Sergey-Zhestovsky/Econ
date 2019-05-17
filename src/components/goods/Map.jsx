@@ -5,7 +5,7 @@ import "../../css/map.css";
 
 export default function Map({ map, clickHandler, dots }) {
   function click(e) {
-    if (!map)
+    if (!map || !clickHandler)
       return;
 
     let target = e.target,

@@ -1,47 +1,117 @@
-import React from "react";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Map from "./Map";
+import ProductDetailField from "./parts/ProductDetailField";
+import connector from "../../storage/connection/rootConnector";
+import ElementBusketButton from "../basket/ElementBusketButton";
 
 import "../../css/productDetails.css";
 
-export default function ProductDetails(props) {
-  const PROPS = ["name", "type", "company", "country", "rating", "price"];
+class ProductDetails extends Component {
+  state = {
+    loaded: false,
+    product: null
+  }
 
-  return (
-    <div className="product-details container">
-      <div className="product-details_container column-container">
-        <div className="product-details_column center">
-          <img className="product-details_img" src="/img/products/b6af6debb9bed5225fd914be900.png" alt="" />
+  fieldConfig = [{
+    prop: "name",
+    name: "Name"
+  }, {
+    prop: "productType",
+    name: "Type",
+    path: "name"
+  }, {
+    prop: "company",
+    name: "Company"
+  }, {
+    prop: "country",
+    name: "Country",
+    path: "name"
+  }];
+
+  componentDidMount() {
+    connector.goodsConnector.getProduct(this.props.match.params.id)
+      .then(product => this.setState({
+        product,
+        loaded: true
+      }))
+      .catch(error => this.setState({
+        loaded: true
+      }));
+  }
+
+  renderWrapper(child) {
+    console.log(this.props)
+    return (
+      <div className="product-details container">
+        <div className="product-details_menu">
+          <button onClick={this.props.history.goBack} className="product-details_back-btn">
+            <div className="product-details_back-text"><i className="fas fa-long-arrow-alt-left"></i>Back</div>
+          </button>
+          {
+            this.state.product &&
+            <div className="product-details_menu-wrapper">
+              <div className="product-details_menu-name">Basket:</div>
+              <ElementBusketButton element={this.state.product} />
+            </div>
+          }
         </div>
-        <div className="product-details_column column-grid">
+        {child}
+      </div>
+    );
+  }
 
-          <span className="product-details_field-title">Name</span>
-          <span className="product-details_field-context">Some name</span>
+  render() {
+    if (!this.state.loaded)
+      return this.renderWrapper(
+        <div className="product-details_alert">LOADING</div>
+      )
 
-          <span className="product-details_field-title">Type</span>
-          <span className="product-details_field-context">Some name</span>
+    if (!this.state.product)
+      return this.renderWrapper(
+        <div className="product-details_alert">NOT FOUND</div>
+      )
 
-          <span className="product-details_field-title">Company</span>
-          <span className="product-details_field-context">Some name</span>
+    let product = this.state.product;
 
-          <span className="product-details_field-title">Country</span>
-          <span className="product-details_field-context">Some name</span>
+    if (!product)
+      return 1;
 
-          <span className="product-details_field-title">Rating</span>
-          <div className="product-details_field-wrapper">
-            <span className="product-details_field-context">12,5463</span>
-            <span className="product-details_field-meta-context">points</span>
+    let fields = product && this.fieldConfig.map(
+      field => <ProductDetailField
+        key={field.prop}
+        name={field.name}
+        value={field.path ? product[field.prop][field.path] : product[field.prop]} />
+    );
+
+    return this.renderWrapper(
+      <React.Fragment>
+        <div className="product-details_container column-container">
+          <div className="product-details_column center">
+            <img className="product-details_img" src={"/img/products/" + product.image} alt="" />
           </div>
-
-          <div className="product-details_field-title"></div>
-          <div className="product-details_field-price">$ 12</div>
+          <div className="product-details_column column-grid">
+            {fields}
+            <span className="product-details_field-title">Rating</span>
+            <div className="product-details_field-wrapper">
+              <span className="product-details_field-context">{product.rating}</span>
+              <span className="product-details_field-meta-context">points</span>
+            </div>
+            <div className="product-details_field-title"></div>
+            <div className="product-details_field-price">$ {product.price}</div>
+          </div>
         </div>
-      </div>
-      <div className="product-details_container">
-        <div className="product-details_container-title">Product Location</div>
-        <div className="product-details_map-wrapper">
-          <Map />
+        <div className="product-details_container">
+          <div className="product-details_container-title">Product Location</div>
+          <div className="product-details_map-wrapper">
+            <Map
+              map={product.store.image}
+              dots={{ location: product.location }} />
+          </div>
         </div>
-      </div>
-    </div>
-  );
+      </React.Fragment>
+    );
+  }
 }
+
+export default ProductDetails;

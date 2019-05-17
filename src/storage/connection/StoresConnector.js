@@ -17,4 +17,9 @@ export default class StoresConnector extends Connector {
 
     return super.straightRequest(path.root + path.getStores);
   }
+
+  getDefaultStore() {
+    return this.getStores()
+      .then( result => result[0] )
+  }
 }

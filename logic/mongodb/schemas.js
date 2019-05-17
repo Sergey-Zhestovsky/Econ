@@ -40,7 +40,9 @@ let goodsSchema = new Schema({
   },
   discount: {
     type: Number,
-    default: null
+    default: null,
+    min: 0,
+    max: 100
   },
   image: {
     type: Schema.Types.ObjectId,

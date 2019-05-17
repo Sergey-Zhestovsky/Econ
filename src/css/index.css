@@ -21,9 +21,15 @@
   font-weight: 900;
 }
 
+@font-face {
+  font-family: "Point";
+  src: local("Times New Roman");
+  unicode-range: U+002E, U+003A;
+}
+
 * {
   box-sizing: border-box;
-  font-family: "Nexa", "Avant Garde Gothic", Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Point", "Nexa", "Avant Garde Gothic", Verdana, Geneva, Tahoma, sans-serif;
 }
 
 a {

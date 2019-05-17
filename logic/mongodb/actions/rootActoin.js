@@ -6,7 +6,8 @@ let mongoose = require("../connect"),
   productTypes = require("./productTypeActions"),
   goods = require("./goodsActions"),
   store = require("./storeActions"),
-  goodsImage = require("./goodsImageActions");
+  goodsImage = require("./goodsImageActions"),
+  user = require("./userActions");
 
 async function createProduct(data = {}) {
   let image = {}, product, result;
@@ -79,6 +80,7 @@ module.exports = {
   goods,
   goodsImage,
   store,
+  user,
 
   createProduct,
   editProduct,

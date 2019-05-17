@@ -4,6 +4,7 @@ import NavBar from "./parts/ModerationNavigationBar";
 import Goods from "./GoodsController";
 import Types from "./TypesTable";
 import Countries from "./CountriesTable";
+import withAuthrization from "../../hoc/withAuthorization";
 
 import "../../css/moderation.css";
 
@@ -33,4 +34,4 @@ class Moderation extends Component {
   }
 }
 
-export default Moderation;
+export default withAuthrization(Moderation, { authorized: true, redirect: "/", privilege: true });

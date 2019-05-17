@@ -61,7 +61,7 @@
   transform: translateX(0);
 }
 
-.search-element_menu-add-btn {
+.search-element_menu .element-basket-btn {
   height: 35px;
   background: #f1f1f1;
   border-radius: 50%;
@@ -72,7 +72,7 @@
   transition: all .125s;
 }
 
-.search-element_menu-add-btn:hover {
+.search-element_menu .element-basket-btn:hover {
   color: #b81961;
 }
 
@@ -122,4 +122,10 @@
 
 .selector-list_third .search-element {
   border-color: burlywood;
+}
+
+.search-list_empty {
+  text-align: center;
+  font-size: 3em;
+  padding: 1em;
 }

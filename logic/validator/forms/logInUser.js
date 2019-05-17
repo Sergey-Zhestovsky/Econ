@@ -3,7 +3,7 @@ module.exports = {
   passwordMaxSize: 100,
   rule() {
     return {
-      email: ["required", "email", ["maxSize", this.mailMaxSize]],
+      email: ["required", ["maxSize", this.mailMaxSize]],
       password: ["required", ["maxSize", this.passwordMaxSize]]
     }
   }

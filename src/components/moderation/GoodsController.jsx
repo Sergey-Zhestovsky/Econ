@@ -115,7 +115,7 @@ class GoodsController extends Component {
   }
 }
 
-function mapStateFromProps(state) {
+function mapStateToProps(state) {
   return {
     goods: state.goods
   }
@@ -128,4 +128,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateFromProps, mapDispatchToProps)(GoodsController);
+export default connect(mapStateToProps, mapDispatchToProps)(GoodsController);

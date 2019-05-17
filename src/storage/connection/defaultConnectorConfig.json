@@ -4,7 +4,9 @@
       "root": "/goods/",
       "setProduct": "create",
       "updateProduct": "update",
-      "deleteProduct": "delete"
+      "deleteProduct": "delete",
+      "getProduct": "get",
+      "setFavorite": "favorite"
     }
   },
   "countriesConnector": {
@@ -20,6 +22,14 @@
   "storesConnector": {
     "pathStructure": {
       "root": "/store/"
+    }
+  },
+  "userConnector": {
+    "pathStructure": {
+      "root": "/authorization/",
+      "setUser": "signup",
+      "logout": "logout",
+      "login": "login"
     }
   }
 }

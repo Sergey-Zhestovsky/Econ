@@ -1,12 +1,11 @@
 .sample-list {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2em;
 }
 
 .sample-product {
-  width: 25%;
-  padding: 15px 2.5%;
+  padding: 15px;
   transition: all .125s;
 }
 
@@ -14,7 +13,7 @@
   width: 100%;
   height: 200px;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   margin-bottom: 10px;
 }
@@ -33,8 +32,9 @@
 }
 
 .sample-list_more-btn-text {
-  padding: 15px 25px;
+  height: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
   transition: all .125s;
 }

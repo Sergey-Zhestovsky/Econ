@@ -29,7 +29,8 @@
 .authorization_form-block input {
   width: 300px;
   background: inherit;
-  padding: 5px 15px;
+  padding: 2px 15px;
+  line-height: 1.5;
   border: none;
   border-bottom: 2px solid #f0436b;
   transition: all .125s;
@@ -40,7 +41,6 @@
 .authorization_form-block input:-webkit-autofill:focus {
   border: none;
   border-bottom: 2px solid #f0436b;
-  -webkit-text-fill-color: whitesmoke;
   -webkit-box-shadow: none;
   transition: background-color 5000s ease-in-out 0s;
 }

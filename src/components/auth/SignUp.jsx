@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import ErrorMessage from "./ErrorMessage";
 import ServerErrorMessage from "./ServerError";
-//import { connect } from "react-redux";
-//import { signUp } from "../../storage/actions/userActions";
+import { connect } from "react-redux";
+import { signUp } from "../../storage/actions/userActions";
 import Validator from "../../js/validator";
-//import Authorization from "../../hoc/Authorization";
+import withAuthrization from "../../hoc/withAuthorization";
 
 import "../../css/auth.css"
 
@@ -92,19 +92,18 @@ class SignUp extends Component {
   }
 }
 
-// function mapStateToProps(state) {
-//   return {
-//     authError: state.auth.error.signUp
-//   };
-// }
+function mapStateToProps(state) {
+  return {
+    authError: state.auth.error.signUp
+  };
+}
 
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     signUp: (user) => dispatch(signUp(user))
-//   };
-// }
+function mapDispatchToProps(dispatch) {
+  return {
+    signUp: (user) => dispatch(signUp(user))
+  };
+}
 
-export default SignUp;
-// connect(mapStateToProps, mapDispatchToProps)(
-//   Authorization(SignUp, { authorized: false, redirect: "/" })
-// );
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withAuthrization(SignUp, { authorized: false, redirect: "/" })
+);

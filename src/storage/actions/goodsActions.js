@@ -77,3 +77,14 @@ export function deleteProduct(id) {
       });
   }
 }
+
+export function setFavoriteProduct(product) {
+  return (dispatch, getState, { goodsConnector }) => {
+    goodsConnector.setFavorite(product);
+
+    dispatch({
+      type: "SET_BASKET",
+      product
+    });
+  }
+}

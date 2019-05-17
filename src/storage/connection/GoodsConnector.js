@@ -9,16 +9,18 @@ export default class GoodsConnector extends Connector {
       getGoods: pathStructure.getGoods = "",
       setProduct: pathStructure.setProduct = "",
       updateProduct: pathStructure.updateProduct = "",
-      deleteProduct: pathStructure.deleteProduct = ""
+      deleteProduct: pathStructure.deleteProduct = "",
+      getProduct: pathStructure.getProduct = "",
+      setFavorite: pathStructure.setFavorite = ""
     } = pathStructure);
 
     this.pathStructure = pathStructure;
   }
 
-  getGoods() {
+  getGoods(length, sortedBy) {
     let path = this.pathStructure;
 
-    return super.straightRequest(path.root + path.getGoods);
+    return super.straightRequest(path.root + path.getGoods, {length, sortedBy});
   }
 
   setProduct(product) {
@@ -55,5 +57,17 @@ export default class GoodsConnector extends Connector {
     let path = this.pathStructure;
 
     return super.straightRequest(path.root + path.deleteProduct, {id});
+  }
+
+  getProduct(id) {
+    let path = this.pathStructure;
+
+    return super.straightRequest(path.root + path.getProduct, {id});
+  }
+
+  setFavorite(product) {
+    let path = this.pathStructure;
+
+    return super.straightRequest(path.root + path.setFavorite, product);
   }
 }

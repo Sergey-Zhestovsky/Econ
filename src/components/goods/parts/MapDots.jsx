@@ -3,7 +3,7 @@ import React from "react";
 export default function MapDots({ dots }) {
   if (!dots)
     return null;
-    
+
   if (!Array.isArray(dots))
     dots = [dots];
 
@@ -11,8 +11,10 @@ export default function MapDots({ dots }) {
     let style = {
       top: el.location.y + "%",
       left: el.location.x + "%"
-    };
-    return <div className="product-map_dot" style={style} key={el.location.x+" "+el.location.y}></div>
+    },
+      id = el._id || (el.location.x + " " + el.location.y);
+      
+    return <div className="map_dot" style={style} key={id}></div>
   });
 
   return view;

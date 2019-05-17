@@ -1,36 +1,7 @@
 import { template } from "@babel/core";
 
-const TEMP = {
-  _id: 49763468349867,
-  name: "temp name",
-  productType: {
-    _id: 123,
-    name: "product type name"
-  },
-  company: "company",
-  country: {
-    _id: 123,
-    name: "country Name"
-  },
-  price: 123,
-  discount: null,
-  image: "/img/goods/123.jpg",
-  storage: {
-    img: "/img/storages/123.jpg"
-  },
-  location: {
-    x: 12,
-    y: 72
-  },
-  addCounter: 123,
-  rating: 412,
-  date: 16902369
-};
-
 let init = {
-  goods: [
-    { ...TEMP, _id: 1 }, { ...TEMP, _id: 2 }, { ...TEMP, _id: 3 }
-  ],
+  goods: [],
   error: null,
   loading: false
 };

@@ -54,14 +54,13 @@ class Authorization {
       authUser = authUser.user;
 
       let userJSON = JSON.stringify(authUser),
-        authToken = jwt.sign(userJSON, config["encode_server_key"]),
-        sessionToken = jwt.sign(authToken, config["encode_server_key"]);
+        authToken = jwt.sign(userJSON, config["encode_server_key"]);
 
       response.cookie(this.tokenName, authToken, {
         expires: this.expiresTime, 
         httpOnly: true 
       });
-      response.cookie(this.sessionName, sessionToken, {
+      response.cookie(this.sessionName, userJSON, {
         expires: this.expiresTime
       });
 

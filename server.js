@@ -1,4 +1,5 @@
 let express = require("express"),
+  io = require("socket.io"),
   http = require('http'),
   bodyParser = require("body-parser"),
   cookieParser = require("cookie-parser"),
@@ -11,12 +12,16 @@ let entryRouter = require("./routes/entry"),
   countryRouter = require("./routes/country"),
   productTypeRouter = require("./routes/productType"),
   storeRouter = require("./routes/store"),
+  authRouter = require("./routes/auth"),
   errorRouter = require("./routes/error");
 
-let app = express();
+let app = express(),
+  SocketIo;
 
 http = http.Server(app);
+SocketIo = io(http);
 app.set("dir", __dirname);
+app.set("socketServet", SocketIo);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -28,8 +33,7 @@ app.use("/goods", goodsRouter);
 app.use("/country", countryRouter);
 app.use("/producttype", productTypeRouter);
 app.use("/store", storeRouter);
-//app.use("/authorization", authRouter);
-
+app.use("/authorization", authRouter);
 app.use(errorRouter.error);
 app.use(errorRouter.devError);
 

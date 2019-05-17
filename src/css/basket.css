@@ -1,0 +1,94 @@
+.basket_wrapper {
+  position: relative;
+  display: flex;
+}
+
+.basket_open-button {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  color: #ba1962;
+  padding: 5px;
+  border: 2px solid #ba1962;
+  border-radius: 50%;
+  transition: all .125s;
+}
+
+.basket_open-button:hover {
+  color: whitesmoke;
+  background: #ba1962;
+}
+
+.basket {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #ececec;
+  z-index: 1000;
+  padding: 15px 20px;
+  border-radius: 4px;
+  border: 1px solid #dedede;
+}
+
+.basket_list {
+  font-size: .8em;
+}
+
+.basket_list-element {
+  width: 300px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 5px 0;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.basket_list-element:last-child {
+  border-bottom: unset;
+}
+
+.basket_list-element-image {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.basket_list-element-name {
+  margin: 0 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
+.basket_list-element-remove {
+  flex-shrink: 0;
+  margin-right: 5px;
+  padding: unset;
+  cursor: pointer;
+  transition: all .125s;
+}
+
+.basket_list-element-remove:hover {
+  color: #ba1962;
+}
+
+.basket_list-element-remove i {
+  display: flex;
+}
+
+.basket_menu {
+  padding: 15px 0 0;
+  border-top: 2px solid #f0436b;
+  text-align: center;
+}
+
+.basket_empty {
+  width: 200px;
+  text-align: center;
+  padding: 25px 0;
+}

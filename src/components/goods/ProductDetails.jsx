@@ -41,7 +41,6 @@ class ProductDetails extends Component {
   }
 
   renderWrapper(child) {
-    console.log(this.props)
     return (
       <div className="product-details container">
         <div className="product-details_menu">
@@ -51,7 +50,7 @@ class ProductDetails extends Component {
           {
             this.state.product &&
             <div className="product-details_menu-wrapper">
-              <div className="product-details_menu-name">Basket:</div>
+              <div className="product-details_menu-name">Favorite:</div>
               <ElementBusketButton element={this.state.product} />
             </div>
           }

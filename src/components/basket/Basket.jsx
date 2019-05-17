@@ -10,6 +10,8 @@ class Basket extends Component {
     this.state = {
       isOpen: false
     };
+    this.basketLength = props.basket.length;
+    this.addedAnimation = false;
     this.basketRef = React.createRef();
   }
 
@@ -39,11 +41,33 @@ class Basket extends Component {
     return this.props.clearBasket();
   }
 
+  refreshForAddedAnimation() {
+    this.addedAnimation = true;
+    setTimeout(() => {
+      this.addedAnimation = false;
+      this.forceUpdate();
+    }, 1000);
+
+    return true;
+  }
+
   render() {
+    let nextBasketLenth = this.props.basket.length,
+      isAdded = this.basketLength < nextBasketLenth,
+      showAddAnimation = !this.addedAnimation && isAdded && this.refreshForAddedAnimation();
+
+    this.basketLength = nextBasketLenth;
+
     return (
       <div className="basket_wrapper" ref={this.basketRef}>
         <button onClick={this.toggleMenu}>
-          <div className="basket_open-button"><i className="fas fa-star"></i></div>
+          <div className="basket_open-button">
+            <i className="fas fa-star"></i>
+            {
+              this.addedAnimation &&
+              <div className="basket_open-button-light"></div>
+            }
+          </div>
         </button>
         {
           this.state.isOpen &&

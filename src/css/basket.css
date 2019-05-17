@@ -4,6 +4,7 @@
 }
 
 .basket_open-button {
+  position: relative;
   width: 40px;
   display: flex;
   align-items: center;
@@ -43,6 +44,11 @@
   white-space: nowrap;
   padding: 5px 0;
   border-bottom: 1px solid #d4d4d4;
+  transition: background .125s;
+}
+
+.basket_list-element:hover {
+  background: #d4d4d4;
 }
 
 .basket_list-element:last-child {
@@ -70,7 +76,7 @@
   margin-right: 5px;
   padding: unset;
   cursor: pointer;
-  transition: all .125s;
+  transition: color .125s;
 }
 
 .basket_list-element-remove:hover {
@@ -87,8 +93,47 @@
   text-align: center;
 }
 
+.basket_menu-button {
+  transition: color .125s;
+}
+
+.basket_menu-button:hover {
+  color: #ba1962;
+}
+
 .basket_empty {
   width: 200px;
   text-align: center;
   padding: 25px 0;
+}
+
+.basket_open-button-light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: transparent;
+  border: 0em solid #f2506b;
+  box-sizing: content-box;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+
+  animation: addedEventPuls 1s ease-out;
+}
+
+@keyframes addedEventPuls {
+  from {
+    opacity: 0;
+    border-width: 0em;
+  }
+  15% {
+    opacity: 1;
+    
+  }
+  to {
+    opacity: 0;
+    border-width: 1em;
+  }
 }

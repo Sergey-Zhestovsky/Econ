@@ -39,7 +39,7 @@ class SelectorWrapper extends Component {
       if (config.country)
         array = array.filter(el => el.country._id == config.country);
 
-      array = array.sort((a, b) => a[config.sort] - b[config.sort]);
+      array = array.sort((a, b) => b[config.sort] - a[config.sort]);
 
       return array;
     }

@@ -14,6 +14,19 @@ async function getTypes() {
   return types;
 }
 
+async function getType(data) {
+  let type;
+
+  try {
+    type = await schemas.ProductType.findOne(data);
+  } catch (error) {
+    return Promise.reject(errorHandler("getType", error));
+  }
+
+  return type;
+}
+
 module.exports = {
-  getTypes
+  getTypes,
+  getType
 };

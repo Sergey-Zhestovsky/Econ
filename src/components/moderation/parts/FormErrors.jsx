@@ -5,7 +5,9 @@ const errorMessages = {
   "maxSize": "Maximum number of characters exceeded",
   "imageType": "File should be image",
   "imageSize": "File to big",
-  "number": "Value should be number"
+  "number": "Value should be number",
+  "min": "Value to small",
+  "max": "Value to big",
 }
 
 export default function FormErrors(props) {

@@ -9,9 +9,15 @@ let mongo = require("../mongodb/API"),
   editProductRule = require("../validator/forms/editProduct").rule(),
   editProjectValidator = new Validator(editProductRule);
 
+const RATING_COEFFICIENT = {
+  country: 1,
+  productType: 0.3,
+  addCounter: 0.8,
+  discount: 0.25
+};
 
 class Product {
-  constructor({ _id, name, country, productType, company, image, price, discount, store, location, date }) {
+  constructor({ _id, name, country, productType, company, image, price, discount, store, location, date, rating, addCounter }) {
     this._id = _id;
     this.name = name;
     this.country = country;
@@ -21,6 +27,8 @@ class Product {
     this.discount = discount;
     this.store = store;
     this.location = location && JSON.parse(location) || undefined;
+    this.rating = rating || 0;
+    this.addCounter = addCounter || 0;
     this.date = date;
 
     if (image) {
@@ -45,6 +53,8 @@ class Product {
       location: this.location,
       date: this.date,
       image: this.image,
+      rating: this.rating,
+      addCounter: this.addCounter
     };
 
     if (!this._id)
@@ -56,33 +66,70 @@ class Product {
     return temp;
   }
 
-  setProduct(req) {
+  static async source(_id) {
+    let product, response;
+
+    try {
+      product = await mongo.goods.getProduct({ _id });
+      product.country = product.country._id;
+      product.productType = product.productType._id;
+      product.store = product.store._id;
+      product.location = JSON.stringify({ x: product.location.x, y: product.location.y });
+      delete product.image;
+
+      response = new this(product);
+    } catch (error) { 
+      return Promise.reject(error);
+     }
+
+    return response;
+  }
+
+  async setRating() {
+    let type, country, rating = 0;
+
+    try {
+      [type, country] = await mongo.getStatisticSource(this.Product);
+      rating += type.rating * RATING_COEFFICIENT.productType;
+      rating += country.rating * RATING_COEFFICIENT.country;
+      rating += this.discount * RATING_COEFFICIENT.discount;
+
+      if (this.addCounter)
+        rating += Math.log(this.addCounter) * RATING_COEFFICIENT.addCounter;
+
+      rating = ((rating * 100) | 0) / 100;
+      this.rating = rating;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+
+    return rating;
+  }
+
+  async setProduct(req) {
     let product = this.Product,
+      createResult,
       validationErrors = createProjectValidator.validate(product);
 
     if (Object.keys(validationErrors).length !== 0)
       return Promise.resolve(answerGenerator.error.requireData());
 
-    return mongo.createProduct(product)
-      .then((result) => {
-        if (product.image) {
-          let relPath = config.imageStorage.product,
-            filePath = `${req.app.get("dir")}${relPath}${result.image}`;
+    try {
+      product.rating = await this.setRating();
+      createResult = await mongo.createProduct(product);
 
-          return fs.writeFile(filePath, product.image.buffer)
-            .then(() => result)
-            .catch((error) => { throw error; })
-        } else {
-          return Promise.resolve(result);
-        }
-      }, (error) => {
-        return answerGenerator(error);
-      })
-      .then((result) => {
-        return answerGenerator(null, result);
-      }, (error) => {
-        return answerGenerator(error);
-      });
+      if (product.image) {
+        let relPath = config.imageStorage.product,
+          filePath = `${req.app.get("dir")}${relPath}${result.image}`;
+
+        await fs.writeFile(filePath, product.image.buffer);
+      }
+    } catch (error) {
+      return answerGenerator(error);
+    }
+
+
+    return answerGenerator(null, createResult);
   }
 
   async updateProduct(req) {
@@ -96,6 +143,7 @@ class Product {
     delete product.date;
 
     try {
+      product.rating = await this.setRating();
       sourcePath = await mongo.goods.getProduct({ _id: product._id });
       editResult = await mongo.editProduct({ ...product });
 
@@ -127,6 +175,23 @@ class Product {
       return answerGenerator(error);
     }
     return answerGenerator(null, result);
+  }
+
+  async addFavorite(amount = 1) {
+    let rating, response;
+
+    this.addCounter += 1;
+
+    try {
+      rating = await this.setRating();
+      response = await mongo.goods.addFavorite({
+        _id: this._id,
+        rating,
+        amount
+      });
+    } catch (error) { console.log(error) }
+
+    return response;
   }
 }
 

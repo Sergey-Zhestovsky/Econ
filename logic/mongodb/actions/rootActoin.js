@@ -45,7 +45,7 @@ async function editProduct(data = {}) {
 
       delete data.image;
     }
-    
+
     result = await goods.editProduct(data);
   } catch (error) {
     if (error.source)
@@ -74,6 +74,22 @@ async function deleteProduct(id) {
   return result;
 }
 
+async function getStatisticSource(product) {
+  let typeData, countryData;
+
+  try {
+    typeData = await productTypes.getType({_id: product.productType});
+    countryData = await country.getCountry({_id: product.country});
+  } catch (error) {
+    if (error.source)
+      return Promise.reject(error);
+
+    return Promise.reject(errorHandler("getStatisticSource", error));
+  }
+
+  return [typeData, countryData];
+}
+
 module.exports = {
   country,
   productTypes,
@@ -84,5 +100,6 @@ module.exports = {
 
   createProduct,
   editProduct,
-  deleteProduct
+  deleteProduct,
+  getStatisticSource
 };

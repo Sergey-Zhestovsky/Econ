@@ -21,7 +21,7 @@ class SignIn extends Component {
     };
     this.maxFieldSize = 100;
     this.validator = new Validator({
-      email: ["required", "email", ["maxSize", this.maxFieldSize]],
+      email: ["required", ["maxSize", this.maxFieldSize]],
       password: ["required", ["maxSize", this.maxFieldSize]]
     });
   }

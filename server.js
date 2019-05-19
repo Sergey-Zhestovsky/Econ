@@ -13,6 +13,7 @@ let entryRouter = require("./routes/entry"),
   productTypeRouter = require("./routes/productType"),
   storeRouter = require("./routes/store"),
   authRouter = require("./routes/auth"),
+  deviceRouter = require("./routes/device"),
   errorRouter = require("./routes/error");
 
 let app = express(),
@@ -34,6 +35,7 @@ app.use("/country", countryRouter);
 app.use("/producttype", productTypeRouter);
 app.use("/store", storeRouter);
 app.use("/authorization", authRouter);
+app.use("/device", deviceRouter);
 app.use(errorRouter.error);
 app.use(errorRouter.devError);
 

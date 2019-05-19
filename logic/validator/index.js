@@ -85,6 +85,12 @@ class Validator {
         case "maxSize":
           isError = maxSize(value, option.value);
           break;
+        case "max":
+          isError = max(value, option.value);
+          break;
+        case "min":
+          isError = min(value, option.value);
+          break;
         case "larger":
           isError = larger(value, option.value);
           break;
@@ -122,6 +128,14 @@ class Validator {
         return;
 
       return data.toString().length > size;
+    }
+
+    function min(data, size) {
+      return Number(data) >= size;
+    }
+
+    function max(data, size) {
+      return Number(data) <= size;
     }
 
     function larger(data, size) {

@@ -51,7 +51,7 @@ router.post("/create", upload.single("image"), function (req, res, next) {
 
   return product.setProduct(req)
     .then(result => res.send(result))
-    .catch(error => res.send(answerGenerator(error)));
+    .catch(error => res.send(error));
 });
 
 router.post("/update", upload.single("image"), function (req, res, next) {
@@ -59,7 +59,7 @@ router.post("/update", upload.single("image"), function (req, res, next) {
 
   return product.updateProduct(req)
     .then(result => res.send(result))
-    .catch(error => res.send(answerGenerator(error)));
+    .catch(error => res.send(error));
 });
 
 router.post("/delete", function (req, res, next) {
@@ -68,18 +68,5 @@ router.post("/delete", function (req, res, next) {
   product.delete(req)
     .then(result => res.send(result))
 });
-
-router.post("/favorite", function (req, res, next) {
-  let data = req.body,
-    validationErrors = favoriteValidator.validate(data),
-    socketIo = req.app.get("socketServet");
-
-  if (Object.keys(validationErrors).length !== 0)
-    return Promise.resolve(answerGenerator.error.requireData());
-
-  socketIo.emit("favorite", {id: data._id, location: data.location});
-  res.send(answerGenerator(null, true));
-});
-
 
 module.exports = router;

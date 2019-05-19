@@ -14,6 +14,19 @@ async function getCountries() {
   return countries;
 }
 
+async function getCountry(data) {
+  let country;
+
+  try {
+    country = await schemas.Country.findOne(data);
+  } catch (error) {
+    return Promise.reject(errorHandler("getCountry", error));
+  }
+
+  return country;
+}
+
 module.exports = {
-  getCountries
+  getCountries,
+  getCountry
 };

@@ -2,6 +2,8 @@ let mongoose = require("mongoose"),
   crypto = require("crypto"),
   Schema = mongoose.Schema;
 
+require("mongoose-long")(mongoose);
+
 let coordinatesSchema = new Schema({
   x: {
     type: Number,
@@ -57,7 +59,8 @@ let goodsSchema = new Schema({
     required: true
   },
   addCounter: {
-    type: Number,
+    type: Schema.Types.Long,
+    min: 0, 
     default: 0
   },
   rating: {

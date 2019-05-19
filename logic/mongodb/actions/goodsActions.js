@@ -13,7 +13,11 @@ async function getProducts({ searchDetails = {}, length = -1, sortedBy = "date" 
       $match: searchDetails
     }, {
       $sort: { [sortedBy]: 1 }
-    }, {
+    },
+    {
+      $limit: length
+    },
+    {
       $lookup: {
         from: 'producttypes',
         localField: 'productType',
@@ -76,12 +80,15 @@ async function getProducts({ searchDetails = {}, length = -1, sortedBy = "date" 
 async function getProduct(searchDetails = {}) {
   let product;
 
-  searchDetails._id = searchDetails._id
-    ? new mongoose.Types.ObjectId(searchDetails._id)
-    : undefined;
-
   try {
+    searchDetails._id = searchDetails._id
+      ? new mongoose.Types.ObjectId(searchDetails._id)
+      : undefined;
+
     product = await getProducts({ searchDetails });
+
+    if (product.length === 0)
+      return Promise.reject(errorHandler("getProduct", { code: "custom010" }));
   } catch (error) {
     return Promise.reject(errorHandler("getProduct", error));
   }
@@ -157,11 +164,50 @@ async function getProductImage(searchDetails = {}) {
   return image[0].image;
 }
 
+async function addFavorite({ _id, rating, amount = 1 } = {}) {
+  let response;
+
+  try {
+    response = await schemas.Goods.updateOne(
+      { _id },
+      {
+        $set: { rating },
+        $inc: { addCounter: amount }
+      }
+    );
+  } catch (error) {
+    return Promise.reject(errorHandler("addFavorite", error));
+  }
+
+  return response;
+}
+
+async function getSample(length = 1) {
+  let goods;
+
+  try {
+    goods = await schemas.Goods.aggregate([
+      {
+        $sort: { "date": 1 }
+      },
+      {
+        $sample: { size: length }
+      }]);
+  } catch (error) {
+    return Promise.reject(errorHandler("getSample", error));
+  }
+
+  return goods;
+}
+
+
 module.exports = {
   getProducts,
   getProduct,
   setProduct,
   editProduct,
   getProductImage,
-  deleteProduct
+  deleteProduct,
+  addFavorite,
+  getSample
 };

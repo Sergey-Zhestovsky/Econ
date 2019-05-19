@@ -36,11 +36,11 @@ export default class Validator {
         value = setValue(values, fieldName, currentProp);
         chooseTest(rule, fieldName, value, values, this.error);
       }
-      
+
       if (!isrequired && !value) {
         delete this.error[fieldName];
       }
-        
+
     }
 
     function setValue(values, valueName, fieldProperty) {
@@ -87,8 +87,11 @@ export default class Validator {
         case "maxSize":
           isError = maxSize(value, option.value);
           break;
-        case "larger":
-          isError = larger(value, option.value);
+        case "min":
+          isError = min(value, option.value);
+          break;
+        case "max":
+          isError = max(value, option.value);
           break;
         case "fullName":
           isError = fullName(value);
@@ -123,7 +126,11 @@ export default class Validator {
       return data.toString().length > size;
     }
 
-    function larger(data, size) {
+    function min(data, size) {
+      return Number(data) < size;
+    }
+
+    function max(data, size) {
       return Number(data) > size;
     }
 

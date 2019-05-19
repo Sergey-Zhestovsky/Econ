@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Validator from "../../../js/validator";
 import FormErrors from "./FormErrors";
 import { setProduct, editProduct } from "../../../storage/actions/goodsActions";
+import ControlledInput from "./ControlledInput";
 
 import "../../../css/popup.css";
 
@@ -41,8 +42,8 @@ class GoodsEditForm extends Component {
       productType: ["required"],
       country: ["required"],
       company: ["required", ["maxSize", 50]],
-      price: ["required", "number"],
-      discount: ["number"],
+      price: ["required", "number", ["min", 0]],
+      discount: ["number", ["min", 0], ["max", 100]],
       image: {
         property: ["type", "type", "size"],
         rules: [
@@ -287,11 +288,13 @@ class GoodsEditForm extends Component {
                   </label>
                   <label className="popup_body-field">
                     <span>Price</span>
-                    <input type="text" name="price" id="price" onChange={this.handleChange} value={this.state.form.price} />
+                    <ControlledInput controller={/^[0-9]*$/} 
+                      type="text" name="price" id="price" onChange={this.handleChange} value={this.state.form.price} />
                   </label>
                   <label className="popup_body-field">
                     <span>Discount</span>
-                    <input type="text" name="discount" id="discount" onChange={this.handleChange} value={this.state.form.discount} />
+                    <ControlledInput controller={/^[0-9]*$/} 
+                      type="text" name="discount" id="discount" onChange={this.handleChange} value={this.state.form.discount} />
                   </label>
                 </div>
               </div>

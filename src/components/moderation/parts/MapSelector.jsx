@@ -52,9 +52,9 @@ class MapSelector extends PureComponent {
   formatLocation(location) {
     return location && (
       <React.Fragment>
-        <span className="map-selector_coordinate-name">x</span>
+        <span className="map-selector_coordinate-name">x:</span>
         {numberFormat(location.x)}
-        <span className="map-selector_coordinate-name">y</span>
+        <span className="map-selector_coordinate-name">y:</span>
         {numberFormat(location.y)}
       </React.Fragment>
     );
@@ -65,7 +65,7 @@ class MapSelector extends PureComponent {
 
       return (
         <span className="map-selector_coordinate">
-          <span>{ int }</span>
+          <span>{ int }</span>.
           <span className="map-selector_coordinate-sub">{ remainder }</span>
         </span>
       )

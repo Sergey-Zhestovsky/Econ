@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import "../../css/sampleList.css";
 
 export default function SampleList(props) {
-  let elementList = props.elements && props.elements.map(
+  let elementList = props.elements && props.elements.reverse().map(
     el => <SampleElement key={el._id} element={el} />
-    );
+    ).splice(0, 3);
+
   return (
     <div className="sample-list">
       { elementList }

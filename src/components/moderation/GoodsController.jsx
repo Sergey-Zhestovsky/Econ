@@ -34,7 +34,7 @@ class GoodsController extends Component {
         {
           property: "date",
           format: function (value) {
-            return moment(value).calendar()
+            return moment(value).format('h:mm, DD.MM.YYYY');
           }
         }
       ],

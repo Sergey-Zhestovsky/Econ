@@ -120,7 +120,7 @@ class Product {
 
       if (product.image) {
         let relPath = config.imageStorage.product,
-          filePath = `${req.app.get("dir")}${relPath}${result.image}`;
+          filePath = `${req.app.get("dir")}${relPath}${createResult.image}`;
 
         await fs.writeFile(filePath, product.image.buffer);
       }

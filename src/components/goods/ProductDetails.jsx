@@ -60,6 +60,29 @@ class ProductDetails extends Component {
     );
   }
 
+  renderPrice() {
+    let product = this.state.product,
+      price = product.price,
+      result = [];
+
+    if (product.discount) {
+      let discount = price * product.discount / 100;
+      price = (((price - discount) * 100) | 0) / 100;
+    }
+
+    result.push(
+      <span>$ {price}</span>
+    );
+
+    if (product.discount) {
+      result.push(
+        <div className="product-details_field-price-with-discount">{product.price}</div>
+      );
+    }
+
+    return result;
+  }
+
   render() {
     if (!this.state.loaded)
       return this.renderWrapper(
@@ -97,7 +120,9 @@ class ProductDetails extends Component {
               <span className="product-details_field-meta-context">points</span>
             </div>
             <div className="product-details_field-title"></div>
-            <div className="product-details_field-price">$ {product.price}</div>
+            <div className="product-details_field-price">
+              {this.renderPrice()}
+            </div>
           </div>
         </div>
         <div className="product-details_container">

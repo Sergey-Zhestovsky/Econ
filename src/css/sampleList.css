@@ -5,8 +5,23 @@
 }
 
 .sample-product {
+  position: relative;
   padding: 15px;
   transition: all .125s;
+}
+
+.sample-product_sale {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #f2546b;
+  width: 45px;
+  height: 45px;
+  border-bottom-left-radius: 100%;
+  text-align: right;
+  padding: 9px;
+  font-size: 1.3em;
+  color: #f9f9f9;
 }
 
 .sample-product_image {

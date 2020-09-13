@@ -9,6 +9,10 @@ export default function SampleElement(props) {
 
   return (
     <Link to={`/product/${element._id}`} className="sample-product">
+      {
+        element.discount &&
+        <div className="sample-product_sale"><i className="fas fa-percent"></i></div>
+      }
       <div className="sample-product_image" style={style}></div>
       <div className="sample-product_text text-name">{element.name}</div>
       <div className="sample-product_text text-country">{element.productType.name}</div>

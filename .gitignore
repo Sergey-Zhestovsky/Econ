@@ -10,7 +10,8 @@
 
 # production
 /build
-/public/img
+/public/img/**/*.*
+!/public/img/screenshots/*.*
 /src/fonts
 /src/webfonts
 /src/img
